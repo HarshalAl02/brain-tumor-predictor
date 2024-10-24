@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumor Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Brain Tumor Detection</h1>
+        <div class="upload-section">
+            <h2>Upload an Image for Prediction</h2>
+            <form method="POST" enctype="multipart/form-data" action="/predict" id="upload-form">
+                <label class="custom-file-upload">
+                    <input type="file" name="image" accept="image/*" required onchange="updateFileName(this)">
+                    Choose File
+                </label>
+                <span id="file-name" class="file-name"></span>
+                <button type="submit">Predict</button>
+            </form>
+            <div id="loading" class="loading" style="display: none;">Loading...</div>
+        </div>
+        {% if prediction %}
+            <div class="result-section">
+                <h2>Prediction: <span class="prediction {{ 'yes' if prediction == 'Yes' else 'no' }}">{{ prediction }}</span></h2>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function updateFileName(input) {
+            const fileName = input.files[0] ? input.files[0].name : 'Choose File';
+            document.getElementById('file-name').textContent = fileName;
+        }
+
+        document.getElementById('upload-form').onsubmit = function() {
+            document.getElementById('loading').style.display = 'block';
+        };
+    </script>
+</body>
+</html>
